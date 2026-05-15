@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+
+    <select id="selectNoticeCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            WEB_NOTICE
+        WHERE
+            STATUS = 'N'
+    </select>
+
+    <select id="selectNoticeList"
+            parameterType="com.kh.web.common.model.dto.PageInfo"
+            resultType="com.kh.web.board.model.dto.NoticeDto">
+        SELECT
+              NOTICE_NO
+            , USER_NAME
+            , NOTICE_TITLE
+            , CREATE_DATE
+            , COUNT
+        FROM
+            WEB_NOTICE W
+        JOIN
+            WEB_MEMBER USING(USER_NO)
+        WHERE
+            W.STATUS = 'N'
+        ORDER 
+        BY
+            CREATE_DATE DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{boardLimit} ROWS ONLY
+    </select>
+
+</mapper>
